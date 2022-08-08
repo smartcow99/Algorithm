@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,7 +10,6 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
         int C = Integer.parseInt(br.readLine());
-
 
         int graph[][] = new int[N+1][N+1];
         boolean flags[] = new boolean[N+1];
