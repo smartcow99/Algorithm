@@ -1,10 +1,10 @@
 # [level 2] 영어 끝말잇기 - 12981 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12981) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12981?language=cpp) 
 
 ### 성능 요약
 
-메모리: 10 MB, 시간: 0.14 ms
+메모리: 4.2 MB, 시간: 0.03 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2023년 10월 0일 20:11:32
+2024년 05월 23일 21:28:04
 
 ### 문제 설명
 
