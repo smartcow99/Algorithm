@@ -8,7 +8,6 @@ public class Main {
     int N = Integer.parseInt(input[0]);
     int M = Integer.parseInt(input[1]);
     List<Integer> list = new ArrayList<>();
-    boolean[] visited = new boolean[N + 1];
     List<List<Integer>> answer = new ArrayList<>();
     StringBuilder sb = new StringBuilder();
 
@@ -16,7 +15,7 @@ public class Main {
       list.add(i);
     }
 
-    comb(answer, list, visited, 1, M, new ArrayList<>());
+    comb(answer, list,  1, M, new ArrayList<>());
 
     for (List<Integer> integers : answer) {
       for (Integer integer : integers) {
@@ -28,18 +27,16 @@ public class Main {
     System.out.println(sb);
   }
 
-  static void comb(List<List<Integer>> answer, List<Integer> arr, boolean[] visited, int start, int r, List<Integer> temp) {
+  static void comb(List<List<Integer>> answer, List<Integer> arr, int start, int r, List<Integer> temp) {
     if (r == 0) {
       answer.add(new ArrayList<>(temp));
       return;
     }
 
     for (int i = start; i <= arr.size(); i++) {
-      visited[i] = true;
       temp.add(arr.get(i - 1));
-      comb(answer, arr, visited, i + 1, r - 1, temp);
+      comb(answer, arr, i + 1, r - 1, temp);
       temp.remove(temp.size() - 1);
-      visited[i] = false;
     }
   }
 }
