@@ -1,31 +1,28 @@
 from collections import deque
 
-def move(num):
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
-    return [dx[num], dy[num]]
-
 def solution(maps):
     n = len(maps)
     m = len(maps[0])
-    visited = [[0 for _ in range(m)] for _ in range(n)]
-    visited[0][0] = 1
-    que = deque([(0, 0)])
     
-    while que:
-        cur = que.popleft()
-        cx, cy = cur
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    distance = [[-1 for _ in range(m)] for _ in range(n)]
+    distance[0][0] = 1
+    
+    queue = deque([(0, 0)])
+    
+    while queue:
+        x, y = queue.popleft()
         
-        for i in range(4):
-            x, y = move(i)
-            nx, ny = cx + x, cy + y
+        if x == n-1 and y == m-1:
+            return distance[x][y]
+        
+        for dx, dy in directions:
+            nx, ny = x + dx, y + dy
             
-            if nx < 0 or nx > n-1 or ny < 0 or ny > m - 1:
-                continue
-            if not visited[nx][ny] and maps[nx][ny]:
-                visited[nx][ny] = visited[cx][cy] + 1
-                que.append((nx, ny))
+            if (0 <= nx < n and 0 <= ny < m and 
+                maps[nx][ny] == 1 and distance[nx][ny] == -1):
                 
-    if visited[n-1][m-1] == 0:
-        return -1
-    return visited[n-1][m-1]
+                distance[nx][ny] = distance[x][y] + 1
+                queue.append((nx, ny))
+    
+    return -1
