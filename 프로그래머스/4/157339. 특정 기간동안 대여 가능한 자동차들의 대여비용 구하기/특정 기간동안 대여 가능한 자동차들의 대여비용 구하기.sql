@@ -1,22 +1,38 @@
-SELECT 
-    c.car_id, 
-    c.car_type, 
-    CAST((c.daily_fee * (100 - p.discount_rate) / 100 * 30) AS SIGNED INTEGER) AS FEE
-FROM 
-    CAR_RENTAL_COMPANY_CAR AS c
-LEFT JOIN 
-    CAR_RENTAL_COMPANY_RENTAL_HISTORY AS h ON c.car_id = h.car_id
-    AND h.start_date <= '2022-11-30'
-    AND h.end_date >= '2022-11-01'
-LEFT JOIN 
-    CAR_RENTAL_COMPANY_DISCOUNT_PLAN AS p ON c.car_type = p.car_type 
-WHERE 
-    c.car_type IN ('세단', 'SUV')
-    AND h.car_id IS NULL
-    AND p.duration_type = '30일 이상'
-    AND CAST((c.daily_fee * (100 - p.discount_rate) / 100 * 30) AS SIGNED INTEGER) >= 500000
-    AND CAST((c.daily_fee * (100 - p.discount_rate) / 100 * 30) AS SIGNED INTEGER) < 2000000
-ORDER BY 
-    FEE DESC, 
-    c.car_type ASC, 
-    c.car_id DESC;
+WITH CCC AS (
+    SELECT
+        C.CAR_ID,
+        C.CAR_TYPE,
+        C.DAILY_FEE,
+        P.DISCOUNT_RATE
+    FROM
+        CAR_RENTAL_COMPANY_CAR C
+        JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN P
+            ON C.CAR_TYPE = P.CAR_TYPE
+    WHERE
+        C.CAR_TYPE IN ('세단', 'SUV')
+        AND P.DURATION_TYPE = '30일 이상'
+),
+CCRH AS (
+    SELECT
+        DISTINCT CAR_ID
+    FROM
+        CAR_RENTAL_COMPANY_RENTAL_HISTORY
+    WHERE
+        START_DATE <= DATE '2022-11-30'
+        AND END_DATE >= DATE '2022-11-01'
+)
+SELECT
+    C.CAR_ID,
+    C.CAR_TYPE,
+    ROUND(C.DAILY_FEE * (100 - C.DISCOUNT_RATE) / 100 * 30) AS FEE
+FROM
+    CCC C
+LEFT JOIN
+    CCRH H ON C.CAR_ID = H.CAR_ID
+WHERE
+    H.CAR_ID IS NULL
+    AND ROUND(C.DAILY_FEE * (100 - C.DISCOUNT_RATE) / 100 * 30) BETWEEN 500000 AND 2000000
+ORDER BY
+    FEE DESC,
+    C.CAR_TYPE,
+    C.CAR_ID DESC;
